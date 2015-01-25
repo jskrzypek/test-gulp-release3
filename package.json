@@ -1,5 +1,5 @@
 {
-  "name": "test-gulp-release",
+  "name": "test-gulp-release3",
   "version": "0.0.2",
   "description": "test",
   "main": "index.js",
@@ -61,12 +61,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jskrzypek/test-gulp-release.git"
+    "url": "https://github.com/jskrzypek/test-gulp-release3.git"
   },
   "author": "jskrzypek",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jskrzypek/test-gulp-release/issues"
+    "url": "https://github.com/jskrzypek/test-gulp-release3/issues"
   },
-  "homepage": "https://github.com/jskrzypek/test-gulp-release"
+  "homepage": "https://github.com/jskrzypek/test-gulp-release3"
 }
