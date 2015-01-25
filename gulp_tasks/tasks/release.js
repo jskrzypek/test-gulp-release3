@@ -240,8 +240,12 @@ gulp.task('release:createRelease', false, function(cb) {
         }));
 });
 
+gulp.task('delay', function(cb){
+    setTimeout(cb, 1000);
+})
+
 gulp.task('release:full', 'Publish a new release version.', function() {
-    return runSequence('githubAuth', 'changelog', 'push', 'release:createRelease');
+    return runSequence('githubAuth', 'changelog', 'push', 'delay', 'release:createRelease');
 });
 
 gulp.task('release:auth', 'Publish a new release version.', function() {
