@@ -215,15 +215,14 @@ gulp.task('release:createRelease', false, function(cb) {
             };
             gutil.log('msg: ', msg);
             github.repos.getTags({
-                owner: ownerRepo[0],
+                user: ownerRepo[0],
                 repo: ownerRepo[1]
             }, function(err, res) {
                 if(err) {
                     gutil.log(gutil.colors.red('Error: ' + err));
                 }
-                if(_(res).findWhere({
-                        name: v
-                    }).value().length === 0) {
+                if(_.findWhere(res, {name: v}) === undefined) {
+                    gutil.log(gutil.colors.red('list of tags: \n'), res);
                     gutil.log(gutil.colors.red('Error: missing tag.'));
                 } else {
                     gutil.log(gutil.colors.red('list of tags: \n'), res);
@@ -243,4 +242,8 @@ gulp.task('release:createRelease', false, function(cb) {
 
 gulp.task('release:full', 'Publish a new release version.', function() {
     return runSequence('githubAuth', 'changelog', 'push', 'release:createRelease');
+});
+
+gulp.task('release:auth', 'Publish a new release version.', function() {
+    return runSequence('githubAuth', 'release:createRelease');
 });
