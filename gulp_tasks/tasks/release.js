@@ -213,11 +213,23 @@ gulp.task('release:createRelease', false, function(cb) {
                 name: v + ': version ' + message,
                 body: body
             };
+            gutil.log('msg: ', msg);
             github.releases.createRelease(msg, function(err, res) {
                 if(err) {
                     gutil.log(gutil.colors.red('Error: ' + err));
+                    gutil.log(gutil.colors.red('Release message: \n'), msg);
                 } else {
-                    del('CHANGELOG.md');
+                    github.releases.listReleases({
+                        owner: ownerRepo[0],
+                        repo: ownerRepo[1]
+                    }, function(err, res) {
+                        if(err) {
+                            gutil.log(gutil.colors.red('Error: ' + err));
+                        }
+                        gutil.log(gutil.colors.red('Release message: \n'), msg);
+                        gutil.log(gutil.colors.red('list of releases: \n'), res);
+                        del('CHANGELOG.md');
+                    });
                 }
             });
         }));
