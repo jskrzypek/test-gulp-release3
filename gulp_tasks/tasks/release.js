@@ -213,41 +213,21 @@ gulp.task('release:createRelease', false, function(cb) {
                 name: v + ': version ' + message,
                 body: body
             };
-            gutil.log('msg: ', msg);
-            github.repos.getTags({
-                user: ownerRepo[0],
-                repo: ownerRepo[1]
-            }, function(err, res) {
+            github.releases.createRelease(msg, function(err, res) {
                 if(err) {
                     gutil.log(gutil.colors.red('Error: ' + err));
-                }
-                if(_.findWhere(res, {name: v}) === undefined) {
-                    gutil.log(gutil.colors.red('list of tags: \n'), res);
-                    gutil.log(gutil.colors.red('Error: missing tag.'));
                 } else {
-                    gutil.log(gutil.colors.red('list of tags: \n'), res);
-                    github.releases.createRelease(msg, function(err, res) {
-                        if(err) {
-                            gutil.log(gutil.colors.red('Error: ' + err));
-                            gutil.log(gutil.colors.red('Release message: \n'), msg);
-                        } else {
-                            gutil.log(gutil.colors.red('Release message: \n'), msg);
-                            del('CHANGELOG.md');
-                        }
-                    });
+                    del('CHANGELOG.md');
                 }
             });
         }));
+
 });
 
-gulp.task('delay', function(cb){
+gulp.task('delay', function(cb) {
     setTimeout(cb, 1000);
-})
+});
 
 gulp.task('release:full', 'Publish a new release version.', function() {
     return runSequence('githubAuth', 'changelog', 'push', 'delay', 'release:createRelease');
-});
-
-gulp.task('release:auth', 'Publish a new release version.', function() {
-    return runSequence('githubAuth', 'release:createRelease');
 });
