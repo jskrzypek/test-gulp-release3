@@ -214,21 +214,27 @@ gulp.task('release:createRelease', false, function(cb) {
                 body: body
             };
             gutil.log('msg: ', msg);
-            github.releases.createRelease(msg, function(err, res) {
+            github.repos.getTags({
+                owner: ownerRepo[0],
+                repo: ownerRepo[1]
+            }, function(err, res) {
                 if(err) {
                     gutil.log(gutil.colors.red('Error: ' + err));
-                    gutil.log(gutil.colors.red('Release message: \n'), msg);
+                }
+                if(_(res).findWhere({
+                        name: v
+                    }).value().length === 0) {
+                    gutil.log(gutil.colors.red('Error: missing tag.'));
                 } else {
-                    github.releases.listReleases({
-                        owner: ownerRepo[0],
-                        repo: ownerRepo[1]
-                    }, function(err, res) {
+                    gutil.log(gutil.colors.red('list of tags: \n'), res);
+                    github.releases.createRelease(msg, function(err, res) {
                         if(err) {
                             gutil.log(gutil.colors.red('Error: ' + err));
+                            gutil.log(gutil.colors.red('Release message: \n'), msg);
+                        } else {
+                            gutil.log(gutil.colors.red('Release message: \n'), msg);
+                            del('CHANGELOG.md');
                         }
-                        gutil.log(gutil.colors.red('Release message: \n'), msg);
-                        gutil.log(gutil.colors.red('list of releases: \n'), res);
-                        del('CHANGELOG.md');
                     });
                 }
             });
