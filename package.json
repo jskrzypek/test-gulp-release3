@@ -1,6 +1,6 @@
 {
   "name": "test-gulp-release3",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "test",
   "main": "index.js",
   "dependencies": {
